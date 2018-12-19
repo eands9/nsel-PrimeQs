@@ -50,7 +50,7 @@ class ViewController: UIViewController {
     
     func askQuestion(){
         randomNumA = Int.random(in: 11 ..< 100)
-        randomNumB = Int.random(in: 11 ..< 100)
+        randomNumB = Int.random(in: 6 ..< 100)
 
         questionLabel.text = "\(randomNumA) X \(randomNumB)"
         answerCorrect = randomNumA * randomNumB
