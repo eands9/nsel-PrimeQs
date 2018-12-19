@@ -26,15 +26,10 @@ class ViewController: UIViewController {
     var convertRoman = ""
     var randomNumA : Int = 0
     var randomNumB : Int = 0
-    var randomNumC : Int = 0
-    var randomNumD : Int = 0
-    var randomNumE : Int = 0
     var firstNum: Int = 0
     var secondNum: Int = 0
-    var thirdNum: Int = 0
     var numA: Double = 0
     var numB: Double = 0
-    var numC: Double = 0
     var questionTxt : String = ""
     var answerCorrect : Double = 0
     var answerUser : Double = 0
@@ -59,9 +54,9 @@ class ViewController: UIViewController {
     }
     
     func askQuestion(){
-        randomNumA = Int.random(in: 10000 ..< 100000)
-        randomNumB = Int.random(in: 100 ..< 1000)
-        firstNum = randomNumA/1000 * 1000 + 13
+        randomNumA = Int.random(in: 10000 ..< 1000000)
+        randomNumB = Int.random(in: 10 ..< 1000)
+        firstNum = randomNumA
         secondNum = randomNumB
         numA = Double(firstNum)
         numB = Double(secondNum)
