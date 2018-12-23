@@ -23,27 +23,20 @@ class ViewController: UIViewController {
     var timer = Timer()
     var counter = 0.0
 
-    var randomNumA : Int = 0
-    var randomNumB : Int = 0
     var questionTxt : String = ""
     var answerCorrect = ""
     var answerUser = ""
     var isShow: Bool = false
     
-    var randomNum = 0
-    var randomDen = 0
-    var numerator = 0.00
-    var denominator = 0.00
-    var answerPercent: String? = ""
-    var answerDecimal: String? = ""
-    var answerFraction: String = ""
-    var fractionNum: String = ""
-    var fractionDen: String = ""
-    var randomDecimal = 0.00
-    typealias Rational = (num : Int, den : Int)
-    let unitLists = [".","/","%"]
-    var fromUnit = ""
-    var toUnit = ""
+    var randomIndex = 0
+    var randomIndexA = 0
+    var randomNumA = 0
+    var randomNumB = 0
+    var randomMultiplier = 0
+    var firstNum = 0.00
+    var secondNum = 0.00
+    var thirdNum = 0
+    var fourthNum = 0
     
     let congratulateArray = ["Great Job", "Excellent", "Way to go", "Alright", "Right on", "Correct", "Well done", "Awesome","Give me a high five"]
     let retryArray = ["Try again","Oooops"]
@@ -64,74 +57,62 @@ class ViewController: UIViewController {
     }
     
     func askQuestion(){
-        randomNumA = Int.random(in: 0...2)
-        randomNumB = Int.random(in: 0...2)
-        while randomNumA == randomNumB{
-            randomNumA = Int.random(in: 0...2)
-            randomNumB = Int.random(in: 0...2)
-        }
-        fromUnit = unitLists[randomNumA]
-        toUnit = unitLists[randomNumB]
-        
-        randomNum = Int.random(in: 1...8)
-        randomDen = Int.random(in: 1...8)
-        
-        while randomNum >= randomDen {
-            randomNum = Int.random(in: 1...8)
-            randomDen = Int.random(in: 1...8)
-        }
-        if randomDen == 7{
-            randomDen += 1
-        }
-        numerator = Double(randomNum)
-        denominator = Double(randomDen)
-        randomDecimal = numerator/denominator
-        fractionNum = String(randomNum)
-        fractionDen = String(randomDen)
-        answerFraction = "\(fractionNum) / \(fractionDen)"
-        answerTxt.text = toUnit
-
-        answerTxt.text = "\(toUnit)"
-        switch randomNumA{
-        case 0: //question is decimal
-            questionLabel.text = getDecimal(dec: randomDecimal)
-            switch randomNumB{
-            case 1: //answer is fraction
-                answerCorrect = answerFraction
-                answerTxt.text = "/ \(fractionDen)"
-            case 2: //answer is percent
-                answerCorrect = getPercent(fraction:randomDecimal)
-            default:
-                answerCorrect = "999"
+        randomIndexA = Int.random(in: 0...1)
+        switch randomIndexA{
+        case 0:
+            randomMultiplier = (Int.random(in: 2...7))*2
+            randomNumA = Int.random(in: 5...15)
+            randomNumB = Int.random(in: 10...20)
+            while randomNumA == randomNumB{
+                randomNumA = Int.random(in: 5...15)
+                randomNumB = Int.random(in: 10...20)
             }
-        case 1: //question is fraction
-            questionLabel.text = answerFraction
-            switch randomNumB{
-            case 0: //answer is decimal
-                answerCorrect = getDecimal(dec: randomDecimal)
-            case 2: //answer is percent
-                answerCorrect = getPercent(fraction:randomDecimal)
-            default:
-                answerCorrect = "999"
+            firstNum = Double(randomNumA) / 2
+            secondNum = firstNum * Double(randomMultiplier)
+            thirdNum = randomNumB
+            fourthNum = thirdNum * randomMultiplier
+        case 1:
+            randomMultiplier = (Int.random(in: 2...7))
+            randomNumA = Int.random(in: 5...15)
+            randomNumB = Int.random(in: 10...20)
+            while randomNumA == randomNumB{
+                randomNumA = Int.random(in: 5...15)
+                randomNumB = Int.random(in: 10...20)
             }
-        case 2: //question is percent
-            questionLabel.text = getPercent(fraction:randomDecimal)
-            switch randomNumB{
-            case 0: //answer is decimal
-                answerCorrect = getDecimal(dec: randomDecimal)
-            case 1: //answer is fraction
-                answerCorrect = answerFraction
-                answerTxt.text = "/ \(fractionDen)"
-            default:
-                answerCorrect = "999"
-            }
+            firstNum = Double(randomNumA)
+            secondNum = Double(randomNumB)
+            thirdNum = randomNumA * randomMultiplier
+            fourthNum = randomNumB * randomMultiplier
         default:
+            firstNum = 9.99
+            secondNum = 9.99
+            thirdNum = 99
+            fourthNum = 99
+        }
+        
+        randomIndex = Int.random(in: 0...3)
+        switch randomIndex{
+        case 0:
+            questionLabel.text = "  ____ is to \(secondNum) as \(thirdNum) is to \(fourthNum)."
+            answerCorrect = String(firstNum)
+        case 1:
+            questionLabel.text = "\(firstNum) is to ____ as \(thirdNum) is to \(fourthNum)."
+            answerCorrect = String(secondNum)
+        case 2:
+            questionLabel.text = "\(firstNum) is to \(secondNum) as ____ is to \(fourthNum)."
+            answerCorrect = String(thirdNum)
+        case 3:
+            questionLabel.text = "\(firstNum) is to \(secondNum) as \(thirdNum) is to ____."
+            answerCorrect = String(fourthNum)
+        default:
+            questionLabel.text = "999"
             answerCorrect = "999"
         }
+
     }
     
     @IBAction func showBtn(_ sender: Any) {
-        answerTxt.text = String(answerCorrect)
+        answerTxt.text = answerCorrect
         isShow = true
     }
     
@@ -182,36 +163,6 @@ class ViewController: UIViewController {
     func randomTryAgain(){
         randomPick = Int(arc4random_uniform(2))
         readMe(myText: retryArray[randomPick])
-    }
-    func getDecimal (dec: Double) -> String {
-        let decFormatter = NumberFormatter()
-        decFormatter.numberStyle = NumberFormatter.Style.decimal
-        decFormatter.multiplier = 1
-        decFormatter.minimumFractionDigits = 1
-        decFormatter.maximumFractionDigits = 4
-        answerDecimal = decFormatter.string(for: dec)
-        return (answerDecimal)!
-    }
-    func getFraction(dec : Double, withPrecision eps : Double = 1.0E-6) -> Rational {
-        var x = dec
-        var a = floor(x)
-        var (h1, k1, h, k) = (1, 0, Int(a), 1)
-        
-        while x - a > eps * Double(k) * Double(k) {
-            x = 1.0/(x - a)
-            a = floor(x)
-            (h1, k1, h, k) = (h, k, h1 + Int(a) * h, k1 + Int(a) * k)
-        }
-        return (h, k)
-    }
-    func getPercent (fraction: Double) -> String {
-        let percentFormatter = NumberFormatter()
-        percentFormatter.numberStyle = NumberFormatter.Style.percent
-        percentFormatter.multiplier = 1
-        percentFormatter.minimumFractionDigits = 1
-        percentFormatter.maximumFractionDigits = 2
-        answerPercent = percentFormatter.string(for: fraction*100)
-        return (answerPercent)!
     }
 }
 
