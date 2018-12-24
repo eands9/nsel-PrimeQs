@@ -68,7 +68,7 @@ class ViewController: UIViewController {
             answerCorrect = String(numA)
             numA = 0
         case 2:
-            numA = Int.random(in: 100...500)
+            numA = Int.random(in: 100...200)
             while isPrime(num: numA){
                 numA = Int.random(in: 100...500)
             }
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
             let numE = numD.min()
             answerCorrect = String(numE!)
         case 3:
-            numA = Int.random(in: 100...500)
+            numA = Int.random(in: 100...200)
             while isPrime(num: numA){
                 numA = Int.random(in: 100...500)
             }
